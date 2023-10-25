@@ -16,7 +16,7 @@ str_5 = "Last modified date: 2023-10-25\n"
         (
             {"base_path": "arquivo_teste.txt"},
             f"{str_1}{str_2}{str_3}{str_4}{str_5}",
-        )
+        ),
     ],
 )
 def test_exibe_mensagem_correta(capsys, context, expected):
@@ -25,3 +25,23 @@ def test_exibe_mensagem_correta(capsys, context, expected):
     show_details(context)
     captured = capsys.readouterr()
     assert captured.out == expected
+
+
+# 02: usa o formato de data correto
+@pytest.mark.parametrize(
+    "context, expected",
+    [
+        (
+            {"base_path": "arquivo_teste.txt"},
+            f"{str_1}{str_2}{str_3}{str_4}{str_5}",
+        ),
+    ],
+)
+def test_exibe_data_formato_correto(capsys, context, expected):
+    with open("arquivo_teste.txt", "w"):
+        pass
+    show_details(context)
+    captured = capsys.readouterr()
+
+    linha_info_data = captured.out.splitlines()[-1].strip()
+    assert linha_info_data == "Last modified date: 2023-10-25"
