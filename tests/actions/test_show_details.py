@@ -45,3 +45,18 @@ def test_exibe_data_formato_correto(capsys, context, expected):
 
     linha_info_data = captured.out.splitlines()[-1].strip()
     assert linha_info_data == "Last modified date: 2023-10-25"
+
+
+@pytest.mark.parametrize(
+    "context, expected",
+    [
+        (
+            {"base_path": "arquivo_nao_existente.txt"},
+            "File 'arquivo_nao_existente.txt' does not exist\n",
+        ),
+    ],
+)
+def test_arquivo_nao_existente(capsys, context, expected):
+    show_details(context)
+    captured = capsys.readouterr()
+    assert captured.out == expected
