@@ -8,6 +8,8 @@ str_3 = "File type: file\n"
 str_4 = "File extension: .txt\n"
 str_5 = "Last modified date: 2023-10-25\n"
 
+str_6 = "File extension: [no extension]\n"
+
 
 # 01: exibe as mensagens corretas
 @pytest.mark.parametrize(
@@ -47,6 +49,7 @@ def test_exibe_data_formato_correto(capsys, context, expected):
     assert linha_info_data == "Last modified date: 2023-10-25"
 
 
+# 03: arquivo não existente
 @pytest.mark.parametrize(
     "context, expected",
     [
@@ -60,3 +63,21 @@ def test_arquivo_nao_existente(capsys, context, expected):
     show_details(context)
     captured = capsys.readouterr()
     assert captured.out == expected
+
+
+# 04: arquivo sem extensão
+@pytest.mark.parametrize(
+    "context, expected",
+    [
+        (
+            {"base_path": "arquivo_teste"},
+            f"{str_1}{str_2}{str_3}{str_6}{str_5}",
+        ),
+    ],
+)
+def test_arquivo_sem_extensao(capsys, context, expected):
+    with open("arquivo_teste", "w"):
+        pass
+    show_details(context)
+    captured = capsys.readouterr()
+    assert "File extension: [no extension]" in captured.out
