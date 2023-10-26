@@ -22,6 +22,7 @@ def mockar_funcao_get_printable_file_path(caminho_arquivo):
 
 def test_espaco_usado_com_arquivos(capsys, arquivos_temporarios):
     context = {"all_files": arquivos_temporarios}
+
     tamanho_total = sum(
         os.path.getsize(arquivo) for arquivo in arquivos_temporarios
     )
@@ -43,6 +44,22 @@ def test_espaco_usado_com_arquivos(capsys, arquivos_temporarios):
         )
 
     saida_esperada.append(f"Total size: {tamanho_total}")
+
+    with patch(
+        "pro_filer.actions.main_actions._get_printable_file_path",
+        side_effect=mockar_funcao_get_printable_file_path,
+    ):
+        show_disk_usage(context)
+        captured = capsys.readouterr()
+        saida_real = captured.out.splitlines()
+
+    assert saida_real == saida_esperada
+
+
+def test_espaco_usado_sem_arquivos(capsys):
+    context = {"all_files": []}
+
+    saida_esperada = ["Total size: 0"]
 
     with patch(
         "pro_filer.actions.main_actions._get_printable_file_path",
