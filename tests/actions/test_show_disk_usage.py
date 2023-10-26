@@ -43,3 +43,19 @@ def test_espaco_usado(capsys, context, tmp_path):
 
         # tamanho total esta correto
         assert "Total size: 44" in saida_espaco_usado
+
+        # ordenacao de saida
+        linhas = saida_espaco_usado.split("\n")
+
+        linhas_arquivo = []
+        for linha in linhas:
+            if linha.startswith("'mock_caminho_arquivo'"):
+                linhas_arquivo.append(linha)
+
+        def obter_tamanho_arquivo(linha):
+            return int(linha.split()[-2])
+
+        assert linhas_arquivo == sorted(
+            linhas_arquivo,
+            key=obter_tamanho_arquivo,
+        )
