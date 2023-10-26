@@ -40,7 +40,7 @@ def test_espaco_usado_com_arquivos(capsys, arquivos_temporarios):
         ).ljust(70)
         percentual = int(tamanho_arquivo / tamanho_total * 100)
         saida_esperada.append(
-            f"{caminho_formatado}{tamanho_arquivo} ({percentual}%)"
+            f"'{caminho_formatado}': {tamanho_arquivo} ({percentual}%)"
         )
 
     saida_esperada.append(f"Total size: {tamanho_total}")
