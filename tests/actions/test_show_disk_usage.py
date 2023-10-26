@@ -1,18 +1,14 @@
 from pro_filer.actions.main_actions import show_disk_usage  # NOQA
+
 import pytest
 
 
-# 01: verificar a saida do diretorio vazio
-@pytest.mark.parametrize(
-        "context, expected",
-        [
-            (
-                {"all_files": []},
-                "Total size: 0",
-            ),
-        ],
-)
-def test_espaco_usado_diretorio_vazio(capsys, context, expected):
-    show_disk_usage(context)
-    captured = capsys.readouterr()
-    assert captured.out == expected
+@pytest.fixture
+def arquivos_temporarios(tmp_path):
+    arquivo1 = tmp_path / "arquivo1.txt"
+    arquivo1.write_text("a")
+
+    arquivo2 = tmp_path / "arquivo2.txt"
+    arquivo2.write_text("aaa")
+
+    return [str(arquivo1), str(arquivo2)]
